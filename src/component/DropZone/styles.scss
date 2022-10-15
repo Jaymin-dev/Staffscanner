@@ -1,0 +1,25 @@
+.dropzone-wrapper {
+  padding: 20px;
+  border: 1px dashed #94afb3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100px;
+  cursor: pointer;
+  background: #cad9df;
+
+  .upload-icon {
+    width: 70px;
+    height: 70px;
+  }
+
+  .dropzone-wrapper-message {
+    text-align: center;
+    margin: 0;
+
+    .download-icon {
+      font-size: 30px;
+      color: #94afb3;
+    }
+  }
+}

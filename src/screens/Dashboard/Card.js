@@ -82,7 +82,11 @@ const Card = ({ data, filter }) => {
   if ((filter === "favourite") & !data.isFavourite) return <> </>;
   if ((filter === "unfavourite") & data.isFavourite) return <> </>;
   return (
-    <div className="col-12 col-sm-8 col-md-6 col-lg-4">
+    <div
+      className="col-12 col-sm-8 col-md-6 col-lg-4"
+      data-aos-duration="1000"
+      data-aos="zoom-out-up"
+    >
       <div className="px-2 py-4">
         <div className="card" ref={tilt} options={options}>
           <img className="card-img" src={data.url} alt="Vans" />

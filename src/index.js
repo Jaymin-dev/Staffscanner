@@ -8,6 +8,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "react-notifications/lib/notifications.css";
 import "react-loading-skeleton/dist/skeleton.css";
+import "aos/dist/aos.css";
 
 const initialState = {};
 

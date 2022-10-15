@@ -31,9 +31,9 @@ const Dashboard = () => {
 
   return (
     <div className="container pt-5">
-      <div className="d-flex justify-content-between mb-4">
+      <div className="d-flex justify-content-between flex-wrap mb-4">
         <Logo />
-        <div className="d-flex align-items-center">
+        <div className="d-flex align-items-center flex-column  flex-md-row">
           <Form.Control
             type="text"
             placeholder="Search"

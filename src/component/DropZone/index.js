@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { NotificationManager } from "react-notifications";
 import Dropzone from "react-dropzone";
-import "./styles.scss";
+import Spinner from "react-bootstrap/Spinner";
+
+//redux
 import { useDispatch } from "react-redux";
 import { getAllImages } from "../../redux/actions/DashboardAction";
-import { ReactComponent as UploadImg } from "../../asset/images/uoload-img.svg";
-import Spinner from "react-bootstrap/Spinner";
-import { NotificationManager } from "react-notifications";
+
+//components
 import { getName } from "../../utils/utility";
+
+import { ReactComponent as UploadImg } from "../../asset/images/uoload-img.svg";
+//styles
+import "./styles.scss";
 
 const DropZone = ({ setModalShow }) => {
   const dispatch = useDispatch();
@@ -47,8 +53,6 @@ const DropZone = ({ setModalShow }) => {
   }, [uploadedFile]);
 
   return (
-    <>
-      {/*<input type="file" name="fileToUploadNep" onChange={handleChangeFile} />*/}
       <Dropzone onDrop={(acceptedFiles) => setUploadededFile(acceptedFiles)}>
         {({ getRootProps, getInputProps }) => (
           <section>
@@ -73,7 +77,6 @@ const DropZone = ({ setModalShow }) => {
           </section>
         )}
       </Dropzone>
-    </>
   );
 };
 

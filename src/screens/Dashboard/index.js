@@ -1,26 +1,35 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import Form from "react-bootstrap/Form";
-import { ReactComponent as Logo } from "../../asset/images/logo.svg";
+
+//redux
+import { useDispatch, useSelector } from "react-redux";
+import { getAllImages } from "../../redux/actions/DashboardAction";
+
+//components
 import Card from "./Card";
 import UploadFile from "./UploadFile";
-import { getAllImages } from "../../redux/actions/DashboardAction";
 import CardLoadingSkeleton from "../../component/CardLoadingSkeleton";
+
+//icons
+import { ReactComponent as Logo } from "../../asset/images/logo.svg";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
   const { allImages } = useSelector(({ dashboard }) => dashboard);
 
+  //states
+  const [favOption, setFavOption] = useState("both");
+  const [imageArray, setImageArray] = useState([]);
+
   useEffect(() => {
     dispatch(getAllImages({ limit: 100 }));
   }, []);
-  const [favOption, setFavOption] = useState("both");
-  const [imageArray, setImageArray] = useState([]);
 
   useEffect(() => {
     setImageArray(allImages.data);
   }, [allImages.data]);
 
+  
   const onSearchHandler = ({ target: { value } }) => {
     const fileSearch = value.toLowerCase();
     const filterData = allImages.data.filter((d) =>

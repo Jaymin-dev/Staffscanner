@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
 
+//styles
 import "./styles.scss";
 
 const Like = ({ onChange, favourite }) => {
   const [isLike, setIsLike] = useState(false);
 
+
   const handleChange = () => {
     setIsLike(!isLike);
     onChange(!isLike);
   };
+
+  
   useEffect(() => {
     setIsLike(favourite);
   }, [favourite]);

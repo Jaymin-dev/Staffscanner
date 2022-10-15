@@ -47,7 +47,7 @@ const Dashboard = () => {
               setFavOption(value);
             }}
           >
-            <option value="both">Both</option>
+            <option value="both">All</option>
             <option value="favourite">Favourite</option>
             <option value="unfavourite">Unfavourite</option>
           </Form.Select>

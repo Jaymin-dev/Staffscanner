@@ -21,9 +21,7 @@ const Axios = axios.create({
 
 Axios.interceptors.request.use(
   async (config) => {
-    config.headers[
-      "x-api-key"
-    ] = `live_XvRm3aomU2eaD9zQAT7vMfeWbwhfv5E3eCRLSwLTu7TfMkMfVYefeYDfRoY461xP`;
+    config.headers["x-api-key"] = process.env.REACT_APP_X_API_KEY;
     if (config.url === "images/upload")
       config.headers = {
         ...config.headers,

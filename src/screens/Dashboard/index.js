@@ -6,6 +6,7 @@ import Card from "./Card";
 import UploadFile from "./UploadFile";
 import { getAllImages } from "../../redux/actions/DashboardAction";
 import CardLoadingSkeleton from "../../component/CardLoadingSkeleton";
+import NoData from "../../asset/images/NoData";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -58,10 +59,19 @@ const Dashboard = () => {
         <div className="row">
           {allImages?.loading ? (
             <CardLoadingSkeleton />
-          ) : (
+          ) : imageArray.length > 0 ? (
             imageArray?.map((c, i) => (
               <Card filter={favOption} data={c} key={i} />
             ))
+          ) : (
+            <div
+              className="col-12 text-center mt-5 pt-5 "
+              data-aos-duration="1000"
+              data-aos="zoom-out-up"
+            >
+              <NoData />
+              <p className="mt-2">No data</p>
+            </div>
           )}
         </div>
       </div>

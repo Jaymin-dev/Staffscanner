@@ -1,7 +1,3 @@
-import Cookies from 'js-cookie';
-
-export const isLoggedIn = () => {
-  // const token = Cookies.get('token');
-  // return !!token;
-  return false;
+export const getName = (data = {}) => {
+  return data.split(".")[0];
 };

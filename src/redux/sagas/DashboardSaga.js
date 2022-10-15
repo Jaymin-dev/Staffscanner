@@ -2,9 +2,6 @@ import { all, call, put, takeLatest } from "redux-saga/effects";
 import { Axios } from "../../api/axios";
 import { getSimplifiedError } from "../../utils/error";
 import {
-  IMAGE_UPLOAD_REQUEST,
-  IMAGE_UPLOAD_SUCCESS,
-  IMAGE_UPLOAD_ERROR,
   GET_IMAGES_REQUEST,
   GET_IMAGES_SUCCESS,
   GET_IMAGES_ERROR,
@@ -23,27 +20,14 @@ import {
   GET_FAVOURITE_POST_SUCCESS,
   GET_FAVOURITE_POST_ERROR,
   GET_FAVOURITE_POST_REQUEST,
+  GET_VOTES_REQUEST,
+  GET_VOTES_SUCCESS,
+  GET_VOTES_ERROR,
+  DELETE_VOTES_REQUEST,
+  DELETE_VOTES_SUCCESS,
+  DELETE_VOTES_ERROR,
 } from "../reducers/DashboardReducer";
 import { NotificationManager } from "react-notifications";
-
-async function uploadImg(payload) {
-  return await Axios.post("images/upload", payload);
-}
-function* handleUploadImg({ payload }) {
-  try {
-    const response = yield call(uploadImg, payload);
-    if (response) {
-      yield put({
-        type: IMAGE_UPLOAD_SUCCESS,
-      });
-    }
-  } catch (error) {
-    yield put({
-      type: IMAGE_UPLOAD_ERROR,
-      payload: getSimplifiedError(error),
-    });
-  }
-}
 
 async function getAllImage(payload) {
   return await Axios.get("images", { params: { ...payload } });
@@ -59,6 +43,9 @@ function* handleGetAllImages({ payload }) {
 
       yield put({
         type: GET_FAVOURITE_POST_REQUEST,
+      });
+      yield put({
+        type: GET_VOTES_REQUEST,
       });
     }
   } catch (error) {
@@ -76,7 +63,6 @@ function* handleAddFavouritePost({ payload }) {
   try {
     const response = yield call(addFavouritePost, payload);
     if (response) {
-      debugger;
       yield put({
         type: ADD_FAVOURITE_POST_SUCCESS,
         payload: {
@@ -130,11 +116,52 @@ function* handleSetVotes({ payload }) {
     if (response) {
       yield put({
         type: SET_VOTES_SUCCESS,
+        payload: response,
       });
     }
   } catch (error) {
     yield put({
       type: SET_VOTES_ERROR,
+      payload: getSimplifiedError(error),
+    });
+  }
+}
+
+async function getVotes(payload) {
+  return await Axios.get(`votes`, { params: { limit: 100, ...payload } });
+}
+function* handleGetVotes({ payload }) {
+  try {
+    const response = yield call(getVotes, payload);
+    if (response) {
+      yield put({
+        type: GET_VOTES_SUCCESS,
+        payload: response,
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: GET_VOTES_ERROR,
+      payload: getSimplifiedError(error),
+    });
+  }
+}
+
+async function deleteVotes({ id }) {
+  return await Axios.delete(`votes/${id}`);
+}
+function* handleDeleteVotes({ payload }) {
+  try {
+    const response = yield call(deleteVotes, payload);
+    if (response) {
+      yield put({
+        type: DELETE_VOTES_SUCCESS,
+        payload: response,
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: DELETE_VOTES_ERROR,
       payload: getSimplifiedError(error),
     });
   }
@@ -183,11 +210,12 @@ function* handleGetFavouritePost({ payload }) {
 }
 
 export default all([
-  takeLatest(IMAGE_UPLOAD_REQUEST, handleUploadImg),
   takeLatest(GET_IMAGES_REQUEST, handleGetAllImages),
   takeLatest(ADD_FAVOURITE_POST_REQUEST, handleAddFavouritePost),
   takeLatest(DELETE_FAVOURITE_POST_REQUEST, handleDeleteFavouritePost),
   takeLatest(SET_VOTES_REQUEST, handleSetVotes),
+  takeLatest(GET_VOTES_REQUEST, handleGetVotes),
+  takeLatest(DELETE_VOTES_REQUEST, handleDeleteVotes),
   takeLatest(LIST_VOTES_REQUEST, handleListVotes),
   takeLatest(GET_FAVOURITE_POST_REQUEST, handleGetFavouritePost),
 ]);

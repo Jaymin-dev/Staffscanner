@@ -8,3 +8,35 @@
     object-position: center;
   }
 }
+.thumbIcon {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  cursor: pointer;
+  g {
+    transition: 0.2s;
+  }
+}
+.thumbIconFill {
+  animation-name: animated;
+  animation-duration: 0.5s;
+  g {
+    fill: #3274db;
+  }
+}
+
+.card-link {
+  cursor: pointer;
+}
+
+@keyframes animated {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-40deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}

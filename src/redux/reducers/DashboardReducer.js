@@ -1,9 +1,5 @@
 import Cookies from "js-cookie";
 
-export const IMAGE_UPLOAD_REQUEST = "IMAGE_UPLOAD_REQUEST";
-export const IMAGE_UPLOAD_SUCCESS = "IMAGE_UPLOAD_SUCCESS";
-export const IMAGE_UPLOAD_ERROR = "IMAGE_UPLOAD_ERROR";
-
 export const GET_IMAGES_REQUEST = "GET_IMAGES_REQUEST";
 export const GET_IMAGES_SUCCESS = "GET_IMAGES_SUCCESS";
 export const GET_IMAGES_ERROR = "GET_IMAGES_ERROR";
@@ -24,11 +20,17 @@ export const SET_VOTES_REQUEST = "SET_VOTES_REQUEST";
 export const SET_VOTES_SUCCESS = "SET_VOTES_SUCCESS";
 export const SET_VOTES_ERROR = "SET_VOTES_ERROR";
 
+export const DELETE_VOTES_REQUEST = "DELETE_VOTES_REQUEST";
+export const DELETE_VOTES_SUCCESS = "DELETE_VOTES_SUCCESS";
+export const DELETE_VOTES_ERROR = "DELETE_VOTES_ERROR";
+
+export const GET_VOTES_REQUEST = "GET_VOTES_REQUEST";
+export const GET_VOTES_SUCCESS = "GET_VOTES_SUCCESS";
+export const GET_VOTES_ERROR = "GET_VOTES_ERROR";
+
 export const LIST_VOTES_REQUEST = "LIST_VOTES_REQUEST";
 export const LIST_VOTES_SUCCESS = "LIST_VOTES_SUCCESS";
 export const LIST_VOTES_ERROR = "LIST_VOTES_ERROR";
-
-export const LOGOUT = "LOGOUT";
 
 export const RESET_BLOCK_AUTH = "RESET_BLOCK_AUTH";
 
@@ -41,35 +43,17 @@ const block = {
 };
 
 const initialState = {
-  imgUpload: { ...block },
   allImages: { data: [], ...block },
   logout: { ...block },
   addFavouritePost: { ...block },
   deleteFavouritePost: { ...block },
+  votes: { data: [], ...block },
   votesSet: { ...block },
   votesList: { ...block },
 };
 
 export const DashboardReducer = (state = initialState, { type, payload }) => {
   switch (type) {
-    case IMAGE_UPLOAD_REQUEST:
-      return { ...state, imgUpload: { ...state.imgUpload, loading: true } };
-    case IMAGE_UPLOAD_SUCCESS:
-      return {
-        ...state,
-        imgUpload: {
-          ...state.imgUpload,
-          loading: false,
-          success: true,
-          error: "",
-        },
-      };
-    case IMAGE_UPLOAD_ERROR:
-      return {
-        ...state,
-        imgUpload: { ...state.imgUpload, loading: false, error: payload },
-      };
-
     case GET_IMAGES_REQUEST:
       return { ...state, allImages: { ...state.allImages, loading: true } };
     case GET_IMAGES_SUCCESS:
@@ -216,6 +200,10 @@ export const DashboardReducer = (state = initialState, { type, payload }) => {
     case SET_VOTES_SUCCESS:
       return {
         ...state,
+        votes: {
+          ...state.votes,
+          data: [...state.votes.data, payload],
+        },
         votesSet: {
           ...state.votesSet,
           loading: false,
@@ -228,6 +216,58 @@ export const DashboardReducer = (state = initialState, { type, payload }) => {
         ...state,
         votesSet: {
           ...state.votesSet,
+          loading: false,
+          error: payload,
+        },
+      };
+
+    case GET_VOTES_REQUEST:
+      return {
+        ...state,
+        votes: { ...state.votes, loading: true },
+      };
+    case GET_VOTES_SUCCESS:
+      return {
+        ...state,
+        votes: {
+          ...state.votes,
+          data: payload,
+          loading: false,
+          success: true,
+          error: "",
+        },
+      };
+    case GET_VOTES_ERROR:
+      return {
+        ...state,
+        votes: {
+          ...state.votes,
+          loading: false,
+          error: payload,
+        },
+      };
+
+    case DELETE_VOTES_REQUEST:
+      const updateVotes = state.votes.data.filter((v) => v.id !== payload.id);
+      return {
+        ...state,
+        votes: { ...state.votes, data: updateVotes, loading: true },
+      };
+    case DELETE_VOTES_SUCCESS:
+      return {
+        ...state,
+        votes: {
+          ...state.votes,
+          loading: false,
+          success: true,
+          error: "",
+        },
+      };
+    case DELETE_VOTES_ERROR:
+      return {
+        ...state,
+        votes: {
+          ...state.votes,
           loading: false,
           error: payload,
         },
@@ -255,15 +295,6 @@ export const DashboardReducer = (state = initialState, { type, payload }) => {
           ...state.votesList,
           loading: false,
           error: payload,
-        },
-      };
-
-    case LOGOUT:
-      Cookies.remove("token", { path: "/" });
-      return {
-        ...initialState,
-        logout: {
-          success: true,
         },
       };
 

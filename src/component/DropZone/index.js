@@ -6,6 +6,7 @@ import { getAllImages } from "../../redux/actions/DashboardAction";
 import { ReactComponent as UploadImg } from "../../asset/images/uoload-img.svg";
 import Spinner from "react-bootstrap/Spinner";
 import { NotificationManager } from "react-notifications";
+import { getName } from "../../utils/utility";
 
 const DropZone = ({ setModalShow }) => {
   const dispatch = useDispatch();
@@ -15,14 +16,12 @@ const DropZone = ({ setModalShow }) => {
   useEffect(async () => {
     if (uploadedFile.length > 0) {
       setLoading(true);
+      const fileName = getName(uploadedFile[0].name);
       const formdata = new FormData();
-      formdata.append("file", uploadedFile[0], uploadedFile[0].name);
+      formdata.append("file", uploadedFile[0], fileName);
       formdata.append("sub_id", process.env.REACT_APP_X_API_KEY);
       const myHeaders = new Headers();
-      myHeaders.append(
-        "x-api-key",
-        "live_XvRm3aomU2eaD9zQAT7vMfeWbwhfv5E3eCRLSwLTu7TfMkMfVYefeYDfRoY461xP"
-      );
+      myHeaders.append("x-api-key", process.env.REACT_APP_X_API_KEY);
       const requestOptions = {
         method: "POST",
         headers: myHeaders,
@@ -34,10 +33,9 @@ const DropZone = ({ setModalShow }) => {
         "https://api.thecatapi.com/v1/images/upload",
         requestOptions
       ).then((r) => {
-        console.log("@@@@", r);
         if (r.status === 201) {
           if (setModalShow) setModalShow(false);
-          dispatch(getAllImages());
+          dispatch(getAllImages({ limit: 100 }));
           NotificationManager.success("Cat image upload successful");
         } else {
           NotificationManager.error("Something went wrong please try again");

@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
+
 import VanillaTilt from "vanilla-tilt";
-import "./styles.scss";
-import Like from "../../component/Like";
+
+//redux
 import { useDispatch, useSelector } from "react-redux";
 import {
   addFavouritePost,
@@ -9,21 +10,29 @@ import {
   deleteVotes,
   setVotes,
 } from "../../redux/actions/DashboardAction";
+
+//components
+import { options } from "../../utils/utility";
+
+//icons
+import Like from "../../component/Like";
 import { ReactComponent as ThumbIcon } from "../../asset/images/like.svg";
+
+//style
+import "./styles.scss";
 
 const Card = ({ data, filter }) => {
   const tilt = useRef(null);
-  const options = {
-    scale: 1.05,
-    speed: 1000,
-    max: 20,
-  };
+  
   const dispatch = useDispatch();
   const { votes = {} } = useSelector(({ dashboard }) => dashboard);
+  const { data: votesData = [] } = votes;
+
+  //states
   const [votesCounter, setVotesCounter] = useState(0);
   const [cardVotesArray, setCardVotesArray] = useState([]);
   const [isVote, setIsVote] = useState(false);
-  const { data: votesData = [] } = votes;
+
 
   useEffect(() => {
     const oneCardVotesArray = votesData.filter((v) => v.image_id === data.id);
@@ -44,6 +53,7 @@ const Card = ({ data, filter }) => {
     VanillaTilt.init(tilt.current, options);
   }, [options]);
 
+  //api Call
   const handleFavImg = (e) => {
     if (e) {
       const payload = {
@@ -56,6 +66,7 @@ const Card = ({ data, filter }) => {
     }
   };
 
+  //votes api Call
   const handleVotes = () => {
     if (isVote) {
       setVotesCounter(votesCounter - 1);

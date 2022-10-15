@@ -1,5 +1,8 @@
 import React from "react";
+//library
 import Skeleton from "react-loading-skeleton";
+
+//style
 import "./styles.scss";
 
 const CardLoadingSkeleton = () => {
